@@ -1,0 +1,385 @@
+﻿@model List<ECommerce.BLL.DTO.ProductDTO>
+@{
+    ViewData["Title"] = "Products - TechShop";
+}
+
+<style>
+    .product-card {
+        transition: all 0.3s ease;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .product-img-container {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .product-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .stock-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+    
+    .category-badge {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 3px;
+        font-size: 11px;
+    }
+    
+    .buy-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .stock-quantity {
+        font-size: 14px;
+        color: #6c757d;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="fw-bold">Tech Products</h1>
+            <p class="text-muted">Discover amazing tech gadgets at great prices</p>
+        </div>
+    </div>
+    
+    <!-- Category Filter -->
+    <div class="mb-4">
+        <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-primary btn-sm active" data-category="all">All</button>
+            <button class="btn btn-outline-primary btn-sm" data-category="Electronics">Electronics</button>
+            <button class="btn btn-outline-primary btn-sm" data-category="Computers">Computers</button>
+            <button class="btn btn-outline-primary btn-sm" data-category="Audio">Audio</button>
+            <button class="btn btn-outline-primary btn-sm" data-category="Accessories">Accessories</button>
+        </div>
+    </div>
+    
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            <h5>No products available</h5>
+            <p>Please check back later for new arrivals.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row" id="productsGrid">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 col-lg-3 mb-4" data-category="@product.Category" data-product-id="@product.Id">
+                    <div class="card product-card h-100">
+                        <div class="product-img-container">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" class="product-img" alt="@product.Name">
+                            }
+                            else
+                            {
+                                <div class="product-img bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-box fa-3x text-muted"></i>
+                                </div>
+                            }
+                            
+                            <!-- Stock Status Badge -->
+                            @if (product.StockQuantity > 10)
+                            {
+                                <span class="stock-badge badge bg-success">In Stock</span>
+                            }
+                            else if (product.StockQuantity > 0)
+                            {
+                                <span class="stock-badge badge bg-warning">Low Stock</span>
+                            }
+                            else
+                            {
+                                <span class="stock-badge badge bg-danger">Out of Stock</span>
+                            }
+                            
+                            <!-- Category Badge -->
+                            <span class="category-badge">@product.Category</span>
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text text-muted small">@product.Description</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <h4 class="text-primary mb-0">$@product.Price.ToString("F2")</h4>
+                                    <span class="stock-quantity" id="stock-@product.Id">@product.StockQuantity in stock</span>
+                                </div>
+                                
+                                <div class="rating">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <small class="text-muted ms-1">(4.5)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                @if (product.StockQuantity > 0)
+                                {
+                                    <button class="btn btn-primary buy-btn" 
+                                            onclick="buyProduct(@product.Id, '@product.Name.Replace("'", "''")', @product.Price)">
+                                        <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-secondary buy-btn" disabled>
+                                        <i class="fas fa-ban me-2"></i>Out of Stock
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<script>
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Products page loaded');
+        
+        // 初始化分类筛选
+        initCategoryFilter();
+        
+        // 添加测试按钮
+        addTestButton();
+    });
+    
+    // 初始化分类筛选
+    function initCategoryFilter() {
+        const filterButtons = document.querySelectorAll('[data-category]');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 移除所有按钮的 active 类
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active', 'btn-primary');
+                    btn.classList.add('btn-outline-primary');
+                });
+                
+                // 为当前按钮添加 active 类
+                this.classList.remove('btn-outline-primary');
+                this.classList.add('active', 'btn-primary');
+                
+                const category = this.getAttribute('data-category');
+                filterProducts(category);
+            });
+        });
+    }
+    
+    // 筛选产品
+    function filterProducts(category) {
+        const products = document.querySelectorAll('#productsGrid > [data-category]');
+        
+        products.forEach(product => {
+            if (category === 'all' || product.getAttribute('data-category') === category) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+    
+    // 购买产品
+    function buyProduct(productId, productName, price) {
+        console.log('Buying product:', productId, productName, price);
+        
+        // 确认购买
+        if (confirm(`Confirm purchase:\n${productName}\nPrice: $${price.toFixed(2)}`)) {
+            // 获取按钮元素
+            const button = event.target;
+            const originalText = button.innerHTML;
+            
+            // 显示加载状态
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            button.disabled = true;
+            
+            // 模拟 API 调用
+            setTimeout(() => {
+                // 恢复按钮状态
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                // 显示成功消息
+                alert(`Purchase successful!\nThank you for buying ${productName}`);
+                
+                // 更新库存
+                updateStock(productId);
+                
+            }, 1000);
+        }
+    }
+    
+    // 更新库存（核心功能）
+    function updateStock(productId) {
+        console.log('Updating stock for product:', productId);
+        
+        // 找到库存显示元素
+        const stockElement = document.getElementById(`stock-${productId}`);
+        if (!stockElement) {
+            console.error('Stock element not found for product:', productId);
+            return;
+        }
+        
+        // 获取当前库存
+        const stockText = stockElement.textContent;
+        const match = stockText.match(/(\d+)/);
+        
+        if (match) {
+            let currentStock = parseInt(match[1]);
+            
+            if (currentStock > 0) {
+                // 减少库存
+                currentStock--;
+                
+                // 更新显示
+                stockElement.textContent = `${currentStock} in stock`;
+                
+                // 更新库存徽章
+                updateStockBadge(productId, currentStock);
+                
+                // 如果库存为0，禁用按钮
+                if (currentStock === 0) {
+                    disableBuyButton(productId);
+                }
+                
+                console.log(`Stock updated: ${currentStock} left`);
+            }
+        }
+    }
+    
+    // 更新库存徽章
+    function updateStockBadge(productId, newStock) {
+        // 找到产品卡片
+        const productCard = document.querySelector(`[data-product-id="${productId}"]`);
+        if (!productCard) return;
+        
+        // 找到徽章
+        const badge = productCard.querySelector('.stock-badge');
+        if (!badge) return;
+        
+        // 根据库存更新徽章
+        if (newStock > 10) {
+            badge.className = 'stock-badge badge bg-success';
+            badge.textContent = 'In Stock';
+        } else if (newStock > 0) {
+            badge.className = 'stock-badge badge bg-warning';
+            badge.textContent = 'Low Stock';
+        } else {
+            badge.className = 'stock-badge badge bg-danger';
+            badge.textContent = 'Out of Stock';
+        }
+    }
+    
+    // 禁用购买按钮
+    function disableBuyButton(productId) {
+        // 找到产品卡片
+        const productCard = document.querySelector(`[data-product-id="${productId}"]`);
+        if (!productCard) return;
+        
+        // 找到购买按钮
+        const buyButton = productCard.querySelector('.buy-btn');
+        if (!buyButton) return;
+        
+        // 禁用按钮
+        buyButton.disabled = true;
+        buyButton.className = 'btn btn-secondary buy-btn';
+        buyButton.innerHTML = '<i class="fas fa-ban me-2"></i>Out of Stock';
+    }
+    
+    // 添加测试按钮（用于测试库存更新）
+    function addTestButton() {
+        // 检查是否已存在测试按钮
+        if (document.getElementById('test-stock-button')) return;
+        
+        // 创建测试按钮
+        const testButton = document.createElement('button');
+        testButton.id = 'test-stock-button';
+        testButton.className = 'btn btn-info position-fixed';
+        testButton.style.bottom = '20px';
+        testButton.style.left = '20px';
+        testButton.style.zIndex = '1000';
+        testButton.innerHTML = '<i class="fas fa-vial me-2"></i>Test Stock Update';
+        
+        // 添加点击事件
+        testButton.onclick = function() {
+            // 找到第一个产品
+            const firstProduct = document.querySelector('[data-product-id]');
+            if (firstProduct) {
+                const productId = firstProduct.getAttribute('data-product-id');
+                updateStock(productId);
+                alert('Stock update test completed!');
+            } else {
+                alert('No products found for testing.');
+            }
+        };
+        
+        // 添加到页面
+        document.body.appendChild(testButton);
+    }
+    
+    // 测试函数：手动更新第一个产品的库存
+    window.testStockUpdate = function() {
+        const firstProduct = document.querySelector('[data-product-id]');
+        if (firstProduct) {
+            const productId = firstProduct.getAttribute('data-product-id');
+            updateStock(productId);
+        }
+    };
+</script>
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Footer Info -->
+<div class="container mt-5 pt-4 border-top">
+    <div class="row text-center">
+        <div class="col-md-4 mb-3">
+            <i class="fas fa-shipping-fast fa-2x text-primary mb-2"></i>
+            <h6>Free Shipping</h6>
+            <p class="small text-muted">On orders over $100</p>
+        </div>
+        <div class="col-md-4 mb-3">
+            <i class="fas fa-shield-alt fa-2x text-primary mb-2"></i>
+            <h6>Secure Payment</h6>
+            <p class="small text-muted">100% secure checkout</p>
+        </div>
+        <div class="col-md-4 mb-3">
+            <i class="fas fa-undo fa-2x text-primary mb-2"></i>
+            <h6>Easy Returns</h6>
+            <p class="small text-muted">30-day return policy</p>
+        </div>
+    </div>
+</div>

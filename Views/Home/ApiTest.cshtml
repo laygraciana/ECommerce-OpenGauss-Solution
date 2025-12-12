@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "API Test";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        
+        .api-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .endpoint {
+            background-color: #e8f5e9;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>E-Commerce API Test</h1>
+        
+        <div class="api-section">
+            <h3>Product API Endpoints</h3>
+            
+            <div class="endpoint">
+                GET /api/ProductsApi - Get all products
+            </div>
+            <button onclick="getProducts()">Test GET All Products</button>
+            
+            <div class="endpoint">
+                GET /api/ProductsApi/{id} - Get product by ID
+            </div>
+            <input type="number" id="productId" placeholder="Enter product ID" value="1" style="padding: 8px; width: 100px;">
+            <button onclick="getProductById()">Test GET Product by ID</button>
+            
+            <div class="endpoint">
+                POST /api/ProductsApi - Create new product
+            </div>
+            <button onclick="createProduct()">Test POST Create Product</button>
+            
+            <div id="result"></div>
+        </div>
+        
+        <div class="api-section">
+            <h3>Database Information</h3>
+            <button onclick="getDbInfo()">Get Database Info</button>
+            <div id="dbInfo"></div>
+        </div>
+    </div>
+
+    <script>
+        const baseUrl = window.location.origin;
+        
+        function getProducts() {
+            fetch(baseUrl + '/api/ProductsApi')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerHTML = 
+                        '<h4>Response:</h4><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = 
+                        '<h4>Error:</h4><pre>' + error + '</pre>';
+                });
+        }
+        
+        function getProductById() {
+            const id = document.getElementById('productId').value;
+            fetch(baseUrl + '/api/ProductsApi/' + id)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Product not found');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('result').innerHTML = 
+                        '<h4>Response:</h4><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = 
+                        '<h4>Error:</h4><pre>' + error + '</pre>';
+                });
+        }
+        
+        function createProduct() {
+            const newProduct = {
+                name: "New Product " + new Date().getTime(),
+                description: "This is a test product created via API",
+                price: (Math.random() * 1000).toFixed(2),
+                stockQuantity: Math.floor(Math.random() * 100)
+            };
+            
+            fetch(baseUrl + '/api/ProductsApi', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newProduct)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = 
+                    '<h4>Product Created:</h4><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = 
+                    '<h4>Error:</h4><pre>' + error + '</pre>';
+            });
+        }
+        
+        function getDbInfo() {
+            fetch(baseUrl + '/api/ProductsApi')
+                .then(response => response.json())
+                .then(products => {
+                    const info = {
+                        totalProducts: products.length,
+                        sampleProducts: products.slice(0, 3),
+                        database: 'SQLite (ecommerce.db)',
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    document.getElementById('dbInfo').innerHTML = 
+                        '<h4>Database Information:</h4><pre>' + JSON.stringify(info, null, 2) + '</pre>';
+                });
+        }
+        
+        // Load initial data
+        document.addEventListener('DOMContentLoaded', function() {
+            getDbInfo();
+        });
+    </script>
+</body>
+</html>

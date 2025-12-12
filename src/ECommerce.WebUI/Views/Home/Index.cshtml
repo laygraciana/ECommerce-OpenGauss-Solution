@@ -1,0 +1,182 @@
+﻿@{
+    ViewData["Title"] = "Welcome to TechShop";
+}
+
+<div class="hero-section py-5 mb-5 fade-in">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Discover Amazing Tech Products</h1>
+                <p class="lead mb-4">From smartphones to laptops, find the perfect tech gadgets at unbeatable prices. Quality products with fast delivery.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="/Home/Products" class="btn btn-light btn-lg px-4 py-3">
+                        <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                    </a>
+                    <a href="#features" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-info-circle me-2"></i> Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                     alt="Tech Products" 
+                     class="img-fluid rounded-3 shadow-lg" 
+                     style="max-height: 400px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5 fade-in" id="features">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-3">Why Choose TechShop?</h2>
+        <p class="text-muted">We provide the best shopping experience for tech enthusiasts</p>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="stat-card text-center h-100">
+                <div class="stat-icon text-primary">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h4 class="fw-bold">Fast Delivery</h4>
+                <p class="text-muted">Get your products delivered within 2-3 business days with our premium shipping service.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="stat-card text-center h-100">
+                <div class="stat-icon text-success">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4 class="fw-bold">Secure Payment</h4>
+                <p class="text-muted">Your payment information is protected with bank-level security encryption.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="stat-card text-center h-100">
+                <div class="stat-icon text-warning">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h4 class="fw-bold">24/7 Support</h4>
+                <p class="text-muted">Our customer support team is available round the clock to assist you.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5 fade-in">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                 alt="Customer Service" 
+                 class="img-fluid rounded-3 shadow">
+        </div>
+        <div class="col-lg-6">
+            <h2 class="fw-bold mb-4">Best Shopping Experience</h2>
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Wide Selection:</strong> Thousands of products across multiple categories
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Competitive Prices:</strong> Best price guarantee on all products
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Easy Returns:</strong> 30-day return policy on all items
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Customer Reviews:</strong> Real reviews from verified customers
+                </li>
+            </ul>
+            <a href="/Home/Products" class="btn btn-primary btn-lg mt-3">
+                <i class="fas fa-arrow-right me-2"></i> Start Shopping
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5 fade-in">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Featured Products</h2>
+            <p class="text-muted">Check out our most popular items</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card product-card">
+                    <div class="card-img-top product-img d-flex align-items-center justify-content-center bg-gradient">
+                        <i class="fas fa-mobile-alt fa-4x text-primary"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Premium Smartphones</h5>
+                        <p class="card-text text-muted">Latest models with advanced features</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="product-price">From $599</span>
+                            <a href="/Home/Products" class="btn btn-primary btn-sm">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card product-card">
+                    <div class="card-img-top product-img d-flex align-items-center justify-content-center bg-gradient">
+                        <i class="fas fa-laptop fa-4x text-primary"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">High-End Laptops</h5>
+                        <p class="card-text text-muted">Powerful laptops for work and gaming</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="product-price">From $999</span>
+                            <a href="/Home/Products" class="btn btn-primary btn-sm">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card product-card">
+                    <div class="card-img-top product-img d-flex align-items-center justify-content-center bg-gradient">
+                        <i class="fas fa-headphones fa-4x text-primary"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Audio Equipment</h5>
+                        <p class="card-text text-muted">Quality sound for music lovers</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="product-price">From $99</span>
+                            <a href="/Home/Products" class="btn btn-primary btn-sm">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+}

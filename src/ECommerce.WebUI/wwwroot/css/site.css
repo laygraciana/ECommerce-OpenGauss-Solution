@@ -1,0 +1,336 @@
+﻿/* ===== 自定义主题样式 ===== */
+
+:root {
+    /* 主色调 - 科技蓝主题 */
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #60a5fa;
+    
+    /* 背景色 */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-dark: #1e293b;
+    
+    /* 文字颜色 */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-light: #ffffff;
+    
+    /* 成功/警告/错误 */
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --error-color: #ef4444;
+    
+    /* 阴影 */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    
+    /* 圆角 */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    
+    /* 字体 */
+    --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'SF Mono', 'Roboto Mono', monospace;
+}
+
+/* ===== 全局样式 ===== */
+body {
+    font-family: var(--font-sans);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, #e2e8f0 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ===== 导航栏样式 ===== */
+.navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary-color) !important;
+}
+
+/* ===== 按钮样式 ===== */
+.btn {
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), #1e40af);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* 购买按钮特殊样式 */
+.buy-btn {
+    background: linear-gradient(135deg, var(--success-color), #059669);
+    color: white !important;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+}
+
+.buy-btn:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ===== 卡片样式 ===== */
+.card {
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    background: var(--bg-secondary);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.product-card {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.product-img {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img {
+    transform: scale(1.05);
+}
+
+/* ===== 分类按钮样式 ===== */
+.category-filter {
+    margin-bottom: 2rem;
+}
+
+.category-filter .btn {
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    margin: 0.25rem;
+    border: 2px solid transparent;
+}
+
+.category-filter .btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* ===== 徽章样式 ===== */
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 600;
+    border-radius: 50px;
+}
+
+.category-badge {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* ===== 价格样式 ===== */
+.product-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.rating {
+    color: #fbbf24;
+}
+
+/* ===== 空状态样式 ===== */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ===== 表格样式 ===== */
+.history-table {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.table-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+}
+
+.table-header th {
+    border: none;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+}
+
+/* ===== 统计卡片样式 ===== */
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ===== 时间线样式 ===== */
+.timeline-content {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ===== 通知样式 ===== */
+.alert {
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ===== 页脚样式 ===== */
+.footer {
+    background: var(--bg-dark);
+    color: var(--text-light);
+    margin-top: 4rem;
+    padding: 2rem 0;
+}
+
+/* ===== 响应式调整 ===== */
+@media (max-width: 768px) {
+    .product-img {
+        height: 160px;
+    }
+    
+    .product-price {
+        font-size: 1.25rem;
+    }
+    
+    .category-filter .btn {
+        padding: 0.375rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* ===== 动画效果 ===== */
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+    }
+}
+
+/* ===== 加载动画 ===== */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== 自定义滚动条 ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}

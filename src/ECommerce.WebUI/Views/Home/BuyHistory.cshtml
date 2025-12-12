@@ -1,0 +1,318 @@
+@model List<ECommerce.BLL.DTO.PurchaseDTO>
+@{
+    ViewData["Title"] = "Purchase History - TechShop";
+    var totalSpent = Model?.Sum(p => p.Price * p.Quantity) ?? 0;
+    var totalItems = Model?.Sum(p => p.Quantity) ?? 0;
+}
+
+<div class="container py-5 fade-in">
+    <!-- Page Header -->
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold mb-3">Purchase History</h1>
+            <p class="lead text-muted">Track all your purchases and orders in one place.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="/Home/Products" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-2"></i> Continue Shopping
+            </a>
+        </div>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary text-white rounded-circle p-3 me-3">
+                        <i class="fas fa-shopping-bag fa-2x"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0">@(Model?.Count ?? 0)</h3>
+                        <p class="text-muted mb-0">Total Orders</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="d-flex align-items-center">
+                    <div class="bg-success text-white rounded-circle p-3 me-3">
+                        <i class="fas fa-box fa-2x"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0">@totalItems</h3>
+                        <p class="text-muted mb-0">Items Purchased</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="d-flex align-items-center">
+                    <div class="bg-warning text-white rounded-circle p-3 me-3">
+                        <i class="fas fa-dollar-sign fa-2x"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0">$@totalSpent.ToString("F2")</h3>
+                        <p class="text-muted mb-0">Total Spent</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    @if (Model == null || !Model.Any())
+    {
+        <div class="empty-state">
+            <i class="fas fa-history fa-4x text-muted mb-4"></i>
+            <h3>No Purchase History</h3>
+            <p class="text-muted mb-4">You haven't made any purchases yet. Start shopping now!</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <a href="/Home/Products" class="btn btn-primary">
+                    <i class="fas fa-shopping-cart me-2"></i> Browse Products
+                </a>
+                <a href="/" class="btn btn-outline-primary">
+                    <i class="fas fa-home me-2"></i> Return Home
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Purchase History Table -->
+        <div class="history-table">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-header">
+                        <tr>
+                            <th class="ps-4">
+                                <i class="fas fa-box me-2"></i>Product
+                            </th>
+                            <th>
+                                <i class="fas fa-dollar-sign me-2"></i>Price
+                            </th>
+                            <th>
+                                <i class="fas fa-hashtag me-2"></i>Quantity
+                            </th>
+                            <th>
+                                <i class="fas fa-calculator me-2"></i>Total
+                            </th>
+                            <th class="pe-4 text-end">
+                                <i class="fas fa-calendar me-2"></i>Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var purchase in Model)
+                        {
+                            var purchaseTotal = purchase.Price * purchase.Quantity;
+                            <tr class="align-middle">
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded p-2 me-3">
+                                            <i class="fas fa-box text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">@purchase.ProductName</h6>
+                                            <small class="text-muted">Product ID: @purchase.ProductId</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="fw-bold">$@purchase.Price.ToString("F2")</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-primary rounded-pill px-3 py-2">
+                                            @purchase.Quantity
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-success">$@purchaseTotal.ToString("F2")</span>
+                                </td>
+                                <td class="pe-4 text-end">
+                                    <div class="text-muted">
+                                        <i class="far fa-calendar me-1"></i>
+                                        @DateTime.Now.ToString("MMM dd, yyyy")
+                                    </div>
+                                    <small class="text-muted">
+                                        @DateTime.Now.ToString("hh:mm tt")
+                                    </small>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <td colspan="3" class="ps-4 fw-bold">Grand Total</td>
+                            <td class="fw-bold text-success fs-5">$@totalSpent.ToString("F2")</td>
+                            <td class="pe-4"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Summary and Actions -->
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3"><i class="fas fa-info-circle me-2"></i>Order Summary</h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Total Orders:</span>
+                                <span class="fw-bold">@Model.Count</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Items Purchased:</span>
+                                <span class="fw-bold">@totalItems</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Average Order Value:</span>
+                                <span class="fw-bold">$@((totalSpent / Model.Count).ToString("F2"))</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3"><i class="fas fa-download me-2"></i>Export Options</h6>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" onclick="exportToCSV()">
+                                    <i class="fas fa-file-csv me-2"></i> Export as CSV
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="printHistory()">
+                                    <i class="fas fa-print me-2"></i> Print History
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="mt-5">
+            <h5 class="fw-bold mb-4"><i class="fas fa-chart-line me-2"></i>Purchase Timeline</h5>
+            <div class="timeline">
+                @{
+                    var recentPurchases = Model.Take(5).ToList();
+                }
+                @for (int i = 0; i < recentPurchases.Count; i++)
+                {
+                    var purchase = recentPurchases[i];
+                    <div class="timeline-item @(i % 2 == 0 ? "left" : "right")">
+                        <div class="timeline-content">
+                            <div class="timeline-date">
+                                <i class="far fa-calendar me-1"></i>
+                                @DateTime.Now.AddDays(-i).ToString("MMM dd")
+                            </div>
+                            <h6 class="mb-1">@purchase.ProductName</h6>
+                            <p class="text-muted small mb-0">
+                                Purchased @purchase.Quantity item(s) for $@purchase.Price.ToString("F2") each
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    /* Timeline Styles */
+    .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+        transform: translateX(-50%);
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 30px;
+        width: 50%;
+        padding-right: 30px;
+    }
+    
+    .timeline-item.right {
+        margin-left: 50%;
+        padding-left: 30px;
+        padding-right: 0;
+    }
+    
+    .timeline-item.left {
+        text-align: right;
+        padding-right: 30px;
+    }
+    
+    .timeline-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .timeline-date {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        top: 20px;
+    }
+    
+    .timeline-item.left::before {
+        right: -6px;
+    }
+    
+    .timeline-item.right::before {
+        left: -6px;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // Export to CSV (simplified)
+        function exportToCSV() {
+            alert('Export feature coming soon! Your purchase history will be downloaded as a CSV file.');
+        }
+        
+        // Print history
+        function printHistory() {
+            window.print();
+        }
+        
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+}

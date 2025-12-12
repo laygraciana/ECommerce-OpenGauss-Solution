@@ -1,0 +1,14 @@
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\bin\Debug\net9.0\ECommerce.DAL.deps.json
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\bin\Debug\net9.0\ECommerce.DAL.runtimeconfig.json
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\bin\Debug\net9.0\ECommerce.DAL.dll
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\bin\Debug\net9.0\ECommerce.DAL.pdb
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ECommerce.DAL.csproj.AssemblyReference.cache
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ECommerce.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ECommerce.DAL.AssemblyInfoInputs.cache
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ECommerce.DAL.AssemblyInfo.cs
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ECommerce.DAL.csproj.CoreCompileInputs.cache
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ECommerce.DAL.dll
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\refint\ECommerce.DAL.dll
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ECommerce.DAL.pdb
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ECommerce.DAL.genruntimeconfig.cache
+C:\Users\graci\ECommerceSolution\src\ECommerce.DAL\obj\Debug\net9.0\ref\ECommerce.DAL.dll

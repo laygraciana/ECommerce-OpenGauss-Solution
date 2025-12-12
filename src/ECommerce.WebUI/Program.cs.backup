@@ -1,0 +1,222 @@
+﻿using Microsoft.EntityFrameworkCore;
+using ECommerce.DAL;
+using System.IO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using ECommerce.DAL;
+using System.IO;
+using ECommerce.BLL.Services;
+using Microsoft.EntityFrameworkCore;
+using ECommerce.DAL;
+using System.IO;
+using ECommerce.DAL;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ECommerceDbContext>(options =>
+    options.UseSqlite("Data Source=ecommerce.db"));
+
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IPurchaseService, PurchaseService>();
+
+var app = builder.Build();
+
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using Microsoft.EntityFrameworkCore;
+using ECommerce.DAL;
+using System.IO;
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
+    db.Database.EnsureCreated();
+    
+    if (!db.Products.Any())
+    {
+        db.Products.AddRange(
+            new Product { Name = "Laptop", Description = "High-performance laptop", Price = 999.99m, StockQuantity = 10 },
+            new Product { Name = "Headphones", Description = "Noise-cancelling headphones", Price = 199.99m, StockQuantity = 25 },
+            new Product { Name = "Smartphone", Description = "Latest smartphone", Price = 799.99m, StockQuantity = 15 },
+            new Product { Name = "T-Shirt", Description = "Cotton t-shirt", Price = 19.99m, StockQuantity = 100 },
+            new Product { Name = "Desk Lamp", Description = "LED desk lamp", Price = 29.99m, StockQuantity = 30 }
+        );
+        db.SaveChanges();
+    }
+}
+
+
+// 确保数据库和表已创建
+using Microsoft.EntityFrameworkCore;
+using ECommerce.DAL;
+using System.IO;
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ECommerce.DAL.ECommerceDbContext>();
+    try
+    {
+        // 这会创建数据库（如果不存在）并创建所有表
+        bool created = dbContext.Database.EnsureCreated();
+        if (created)
+        {
+            Console.WriteLine("数据库和表已创建成功！");
+            
+            // 添加初始产品数据
+            if (!dbContext.Products.Any())
+            {
+                dbContext.Products.AddRange(
+                    new ECommerce.DAL.Product { Name = "Smartphone", Description = "Latest smartphone with advanced features", Price = 599.99m, Category = "Electronics", StockQuantity = 100, ImageUrl = "/images/phone.jpg" },
+                    new ECommerce.DAL.Product { Name = "Laptop", Description = "High-performance laptop for work and gaming", Price = 1299.99m, Category = "Electronics", StockQuantity = 50, ImageUrl = "/images/laptop.jpg" },
+                    new ECommerce.DAL.Product { Name = "Headphones", Description = "Wireless noise-cancelling headphones", Price = 99.99m, Category = "Electronics", StockQuantity = 200, ImageUrl = "/images/headphones.jpg" },
+                    new ECommerce.DAL.Product { Name = "Smart Watch", Description = "Fitness tracker and smart notifications", Price = 249.99m, Category = "Electronics", StockQuantity = 150, ImageUrl = "/images/watch.jpg" },
+                    new ECommerce.DAL.Product { Name = "Tablet", Description = "Portable tablet for entertainment", Price = 399.99m, Category = "Electronics", StockQuantity = 75, ImageUrl = "/images/tablet.jpg" }
+                );
+                dbContext.SaveChanges();
+                Console.WriteLine("初始产品数据已添加！");
+            }
+            
+            // 添加示例购买记录
+            if (!dbContext.Purchases.Any())
+            {
+                dbContext.Purchases.AddRange(
+                    new ECommerce.DAL.Purchase { ProductId = 1, ProductName = "Smartphone", Price = 599.99m, Quantity = 1 },
+                    new ECommerce.DAL.Purchase { ProductId = 2, ProductName = "Laptop", Price = 1299.99m, Quantity = 1 },
+                    new ECommerce.DAL.Purchase { ProductId = 3, ProductName = "Headphones", Price = 99.99m, Quantity = 2 }
+                );
+                dbContext.SaveChanges();
+                Console.WriteLine("示例购买记录已添加！");
+            }
+        }
+        else
+        {
+            Console.WriteLine("数据库已经存在。");
+            Console.WriteLine($"产品数量: {dbContext.Products.Count()}");
+            Console.WriteLine($"购买记录数量: {dbContext.Purchases.Count()}");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"数据库初始化错误: {ex.Message}");
+        Console.WriteLine($"完整错误: {ex}");
+    }
+}
+
+// 确保数据库文件存在并初始化
+Console.WriteLine("=== 数据库初始化 ===");
+Console.WriteLine($"当前目录: {Directory.GetCurrentDirectory()}");
+Console.WriteLine($"数据库文件: app.db");
+
+if (!File.Exists("app.db"))
+{
+    Console.WriteLine("数据库文件不存在，正在创建...");
+    try
+    {
+        // 创建空的数据库文件
+        File.WriteAllBytes("app.db", new byte[0]);
+        Console.WriteLine("✓ 数据库文件已创建");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"创建数据库文件失败: {ex.Message}");
+    }
+}
+
+// 初始化数据库上下文
+try
+{
+    using Microsoft.EntityFrameworkCore;
+using ECommerce.DAL;
+using System.IO;
+using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ECommerce.DAL.ECommerceDbContext>();
+        
+        // 确保数据库连接正常
+        bool canConnect = dbContext.Database.CanConnect();
+        Console.WriteLine($"数据库连接状态: {canConnect}");
+        
+        if (!canConnect)
+        {
+            Console.WriteLine("正在创建数据库表...");
+            bool created = dbContext.Database.EnsureCreated();
+            Console.WriteLine($"数据库表创建: {created}");
+        }
+        else
+        {
+            Console.WriteLine("数据库已连接");
+        }
+        
+        // 检查表是否存在
+        try
+        {
+            var productCount = dbContext.Products.Count();
+            Console.WriteLine($"Products 表记录数: {productCount}");
+        }
+        catch
+        {
+            Console.WriteLine("Products 表不存在，正在创建...");
+            dbContext.Database.ExecuteSqlRaw(@"
+                CREATE TABLE IF NOT EXISTS Products (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Name TEXT NOT NULL,
+                    Description TEXT NOT NULL,
+                    Price REAL NOT NULL,
+                    Category TEXT NOT NULL DEFAULT 'Electronics',
+                    StockQuantity INTEGER NOT NULL DEFAULT 0,
+                    ImageUrl TEXT NOT NULL DEFAULT ''
+                )");
+        }
+        
+        try
+        {
+            var purchaseCount = dbContext.Purchases.Count();
+            Console.WriteLine($"Purchases 表记录数: {purchaseCount}");
+        }
+        catch
+        {
+            Console.WriteLine("Purchases 表不存在，正在创建...");
+            dbContext.Database.ExecuteSqlRaw(@"
+                CREATE TABLE IF NOT EXISTS Purchases (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ProductId INTEGER NOT NULL,
+                    ProductName TEXT NOT NULL,
+                    Price REAL NOT NULL,
+                    Quantity INTEGER NOT NULL DEFAULT 1,
+                    PurchaseDate TEXT NOT NULL DEFAULT (datetime('now')),
+                    UserId TEXT NOT NULL DEFAULT 'demo-user'
+                )");
+        }
+        
+        // 添加初始数据
+        if (!dbContext.Products.Any())
+        {
+            Console.WriteLine("添加初始产品数据...");
+            dbContext.Products.AddRange(
+                new ECommerce.DAL.Product { Name = "Smartphone", Description = "Latest smartphone", Price = 599.99m, Category = "Electronics", StockQuantity = 100, ImageUrl = "/images/phone.jpg" },
+                new ECommerce.DAL.Product { Name = "Laptop", Description = "High-performance laptop", Price = 1299.99m, Category = "Electronics", StockQuantity = 50, ImageUrl = "/images/laptop.jpg" },
+                new ECommerce.DAL.Product { Name = "Headphones", Description = "Wireless headphones", Price = 99.99m, Category = "Electronics", StockQuantity = 200, ImageUrl = "/images/headphones.jpg" }
+            );
+            dbContext.SaveChanges();
+            Console.WriteLine("✓ 初始产品数据已添加");
+        }
+    }
+    Console.WriteLine("✓ 数据库初始化完成");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"数据库初始化错误: {ex.Message}");
+    Console.WriteLine($"完整错误: {ex}");
+}
+app.Run();
+
+
+
+
+

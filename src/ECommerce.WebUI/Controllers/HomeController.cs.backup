@@ -1,0 +1,46 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using ECommerce.BLL.Services;
+
+namespace ECommerce.WebUI.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly IProductService _productService;
+
+        public HomeController(IProductService productService)
+        {
+            _productService = productService;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Products()
+        {
+            var products = _productService.GetAllProducts();
+            return View(products);
+        }
+
+        public IActionResult BuyHistory()
+        {
+            return View();
+        }
+        
+        public IActionResult About()
+{
+    return View();
+}
+
+public IActionResult Contact()
+{
+    return View();
+}
+
+public IActionResult Privacy()
+{
+    return View();
+}
+    }
+}
